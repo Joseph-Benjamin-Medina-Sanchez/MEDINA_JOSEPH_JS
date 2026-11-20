@@ -28,14 +28,99 @@ do {
     }
 
     switch (opcion) {
-        case "1":
-            alert("Módulo de compra en construcción.");
+        case "1": {
+            if (cuposDisponibles === 0) {
+                alert("Compra rechazada: Evento agotado, no quedan cupos disponibles.");
+                break;
+            }
+
+            const nombreInput = prompt("Ingrese el nombre del comprador:");
+            if (nombreInput === null || nombreInput.trim() === "") {
+                alert("Compra rechazada: Debe ingresar el nombre del comprador.");
+                break;
+            }
+            const nombreComprador = nombreInput.trim();
+
+            const tipoInput = prompt(
+                "Ingrese el tipo de participante:\n" +
+                "- Estudiante\n" +
+                "- Docente\n" +
+                "- Público general"
+            );
+            if (tipoInput === null || tipoInput.trim() === "") {
+                alert("Compra rechazada: Debe especificar el tipo de participante.");
+                break;
+            }
+
+            const tipoNormalizado = tipoInput
+                .trim()
+                .toLowerCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "");
+
+            let porcentajeDescuento = 0;
+            let etiquetaTipo = "";
+
+            if (tipoNormalizado === "estudiante") {
+                porcentajeDescuento = DESC_ESTUDIANTE;
+                etiquetaTipo = "Estudiante";
+            } else if (tipoNormalizado === "docente") {
+                porcentajeDescuento = DESC_DOCENTE;
+                etiquetaTipo = "Docente";
+            } else if (tipoNormalizado === "publico general") {
+                porcentajeDescuento = DESC_GENERAL;
+                etiquetaTipo = "Público general";
+            } else {
+                alert("Compra rechazada: Tipo de participante no válido. Use Estudiante, Docente o Público general.");
+                break;
+            }
+
+            const cantidadInput = prompt("Ingrese la cantidad de entradas (1 a " + MAX_ENTRADAS + "):");
+            if (cantidadInput === null || cantidadInput.trim() === "") {
+                alert("Compra rechazada: Debe ingresar una cantidad numérica.");
+                break;
+            }
+
+            const cantidad = Number(cantidadInput.trim());
+            if (!Number.isInteger(cantidad) || cantidad < 1 || cantidad > MAX_ENTRADAS) {
+                alert("Compra rechazada: La cantidad debe ser un número entero entre 1 y " + MAX_ENTRADAS + ".");
+                break;
+            }
+
+            if (cantidad > cuposDisponibles) {
+                alert("Compra rechazada: Cupos insuficientes. Cupos disponibles: " + cuposDisponibles + ".");
+                break;
+            }
+
+            const subtotal = cantidad * PRECIO_ENTRADA;
+            const montoDescuento = subtotal * porcentajeDescuento;
+            const totalPagar = subtotal - montoDescuento;
+
+            cuposDisponibles -= cantidad;
+            entradasVendidas += cantidad;
+            ingresosAcumulados += totalPagar;
+            comprasRealizadas += 1;
+
+            const resumenCompra =
+                "SIMULACIÓN DE UNA COMPRA\n" +
+                "Nombre: " + nombreComprador + "\n" +
+                "Tipo de participante: " + etiquetaTipo + "\n" +
+                "Cantidad de entradas: " + cantidad + "\n\n" +
+                "Subtotal: $" + subtotal.toFixed(2) + "\n" +
+                "Descuento (" + (porcentajeDescuento * 100) + " %): $" + montoDescuento.toFixed(2) + "\n" +
+                "Total a pagar: $" + totalPagar.toFixed(2) + "\n\n" +
+                "Compra realizada exitosamente.\n\n" +
+                "Cupos restantes: " + cuposDisponibles;
+
+            alert(resumenCompra);
+            console.log(resumenCompra);
             break;
+        }
         case "2":
-            alert("Módulo de cupos en construcción.");
+            alert("Cupos disponibles: " + cuposDisponibles);
             break;
         case "3":
-            alert("Módulo de ingresos en construcción.");
+            alert("Ingresos acumulados: $" + ingresosAcumulados.toFixed(2));
             break;
         case "4":
             alert("Saliendo del sistema...");
