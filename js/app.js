@@ -116,18 +116,58 @@ do {
             console.log(resumenCompra);
             break;
         }
-        case "2":
-            alert("Cupos disponibles: " + cuposDisponibles);
+
+        case "2": {
+            let estadoCupos = "";
+            if (cuposDisponibles > 10) {
+                estadoCupos = "Cupos disponibles";
+            } else if (cuposDisponibles >= 1 && cuposDisponibles <= 10) {
+                estadoCupos = "Últimos cupos disponibles";
+            } else {
+                estadoCupos = "Evento agotado";
+            }
+
+            const mensajeCupos =
+                "CONSULTA DE CUPOS - INNOVA ESPE 2026\n\n" +
+                "Cupos disponibles: " + cuposDisponibles + "\n" +
+                "Estado: " + estadoCupos;
+
+            alert(mensajeCupos);
+            console.log(mensajeCupos);
             break;
-        case "3":
-            alert("Ingresos acumulados: $" + ingresosAcumulados.toFixed(2));
+        }
+
+        case "3": {
+            const mensajeIngresos =
+                "CONSULTA DE INGRESOS - INNOVA ESPE 2026\n\n" +
+                "Total de entradas vendidas: " + entradasVendidas + "\n" +
+                "Total de ingresos acumulados: $" + ingresosAcumulados.toFixed(2) + "\n" +
+                "Número de compras realizadas: " + comprasRealizadas;
+
+            alert(mensajeIngresos);
+            console.log(mensajeIngresos);
             break;
-        case "4":
-            alert("Saliendo del sistema...");
+        }
+
+        case "4": {
+            const resumenFinal =
+                "RESUMEN FINAL - SISTEMA INNOVA ESPE 2026\n\n" +
+                "Total de compras realizadas: " + comprasRealizadas + "\n" +
+                "Total de entradas vendidas: " + entradasVendidas + "\n" +
+                "Total de ingresos acumulados: $" + ingresosAcumulados.toFixed(2) + "\n" +
+                "Cupos restantes: " + cuposDisponibles + "\n\n" +
+                "Gracias por utilizar el sistema.";
+
+            alert(resumenFinal);
+            console.log(resumenFinal);
             break;
-        default:
-            alert("Error: Opción de menú inexistente. Ingrese un número del 1 al 4.");
-            console.log("Error: Opción inválida ingresada -> " + opcion);
+        }
+
+        default: {
+            const mensajeError = "Error: Opción de menú inexistente. Por favor seleccione una opción válida (1 a 4).";
+            alert(mensajeError);
+            console.log(mensajeError);
             break;
+        }
     }
 } while (opcion !== "4");
